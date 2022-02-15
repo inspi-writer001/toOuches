@@ -64,13 +64,14 @@ function DEX({ chain, customTokens = {} }) {
   const [isToModalActive, setToModalActive] = useState(false);
   const [fromToken, setFromToken] = useState();  //the react state of the from adddress this would remain change as the case may be
   //comment continued ..i.e user.walletTokenSelected
-  const [toToken, setToToken] = useState(); //this token is fetched from 1inch exchange
+  const [toToken, setToToken] = useState(); //this token is fetched from 1inch exchange,
   const [fromAmount, setFromAmount] = useState(); //the react state of the user's amount, default is 0.00
   const [quote, setQuote] = useState();
   const [currentTrade, setCurrentTrade] = useState();
   const { fetchTokenPrice } = useTokenPrice(); //token price fetched from 1inch exchange
   const [tokenPricesUSD, setTokenPricesUSD] = useState({}); //using the tken price in a react state
 
+  // this is fetching the tokens from 1inch DB
   const tokens = useMemo(() => {
     return { ...customTokens, ...tokenList };
   }, [customTokens, tokenList]);
@@ -80,7 +81,7 @@ function DEX({ chain, customTokens = {} }) {
       tokenPricesUSD?.[fromToken?.["address"]]
         ? tokenPricesUSD[fromToken?.["address"]]
         : null,
-    [tokenPricesUSD, fromToken],
+    [tokenPricesUSD, fromToken]
   );
 
   const toTokenPriceUsd = useMemo(
@@ -88,7 +89,7 @@ function DEX({ chain, customTokens = {} }) {
       tokenPricesUSD?.[toToken?.["address"]]
         ? tokenPricesUSD[toToken?.["address"]]
         : null,
-    [tokenPricesUSD, toToken],
+    [tokenPricesUSD, toToken]
   );
 
   const fromTokenAmountUsd = useMemo(() => {
@@ -174,7 +175,7 @@ function DEX({ chain, customTokens = {} }) {
     const { symbol: toSymbol } = toToken;
     const pricePerToken = parseFloat(
       tokenValue(fromTokenAmount, fromToken["decimals"]) /
-        tokenValue(toTokenAmount, toToken["decimals"]),
+        tokenValue(toTokenAmount, toToken["decimals"])
     ).toFixed(6);
     return (
       <Text style={styles.priceSwap}>
@@ -196,7 +197,7 @@ function DEX({ chain, customTokens = {} }) {
           <div
             style={{ marginBottom: "5px", fontSize: "14px", color: "#434343" }}
           >
-            From
+            {/* variable : should display selected token instead of From */}From
           </div>
           <div
             style={{
@@ -213,43 +214,9 @@ function DEX({ chain, customTokens = {} }) {
                 value={fromAmount} //set this to the user's account
               />
               <Text style={{ fontWeight: "600", color: "#434343" }}>
-                {fromTokenAmountUsd} + "jsss"
+                {fromTokenAmountUsd}
               </Text>
-              {/* this should show the user's
-                balance in usd or not maybe just 0.00 */}
             </div>
-            <Button
-              style={{
-                height: "fit-content",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                borderRadius: "0.6rem",
-                padding: "5px 10px",
-                fontWeight: "500",
-                fontSize: "17px",
-                gap: "7px",
-                border: "none",
-              }}
-              onClick={() => setFromModalActive(true)}
-            >
-              {fromToken ? (
-                <Image
-                  src={
-                    fromToken?.logoURI ||
-                    "https://etherscan.io/images/main/empty-token.png"
-                  }
-                  alt="nologo"
-                  width="30px"
-                  preview={false}
-                  style={{ borderRadius: "15px" }}
-                />
-              ) : (
-                <span>Select a token</span>
-              )}
-              <span>{fromToken?.symbol}</span>
-              <Arrow />
-            </Button>
           </div>
         </Card>
         <div
