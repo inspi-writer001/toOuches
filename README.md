@@ -59,3 +59,4 @@ function Swap() {
 
 
 ## my use case is located under \/src\/components\/DEX\/DEX.jsx
+### this path shows a ready made UI for the GET request to \/1inch
